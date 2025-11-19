@@ -1,4 +1,7 @@
-<p align="center"><a href="#" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Flofa Logo"></a></p>
+<p align="center">
+  <h1 align="center">🌿 FLOFA 🌿</h1>
+  <p align="center"><i>Game Eksplorasi Alam</i></p>
+</p>
 
 <p align="center">
 <a href="#"><img src="https://img.shields.io/badge/python-3.8+-blue.svg" alt="Python Version"></a>
