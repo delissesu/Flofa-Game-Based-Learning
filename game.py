@@ -4,7 +4,6 @@ import math
 import cairo
 import random
 
-
 pygame.init()
 
 
@@ -31,7 +30,7 @@ YELLOW = (255, 255, 0)
 
 GRASS_COLORS = [
     (30, 100, 40), (40, 120, 50), (50, 140, 60),
-    (60, 150, 70), (25, 90, 35) # Tambah variasi
+    (60, 150, 70), (25, 90, 35)
 ]
 
 
@@ -46,58 +45,90 @@ font_text = pygame.font.Font(None, 24)
 font_small = pygame.font.Font(None, 20)
 
 
-# 1. FUNGSI GENERASI SPRITE
+def load_spritesheet(path, frame_width, frame_height):
+    sheet = pygame.image.load(path).convert_alpha()
+    sheet_w, sheet_h = sheet.get_size()
+    frames = []
 
-def create_player_sprite(size=40):
+    for y in range(0, sheet_h, frame_height):
+        for x in range(0, sheet_w, frame_width):
+            frame = sheet.subsurface(pygame.Rect(x, y, frame_width, frame_height))
+            frames.append(frame)
+
+    return frames
+
+def create_player_sprite(size=80):
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, size, size)
     ctx = cairo.Context(surface)
+
     ctx.set_source_rgba(0, 0, 0, 0)
     ctx.paint()
-    ctx.set_source_rgb(0.95, 0.8, 0.7) 
-    ctx.arc(size/2, size/3, size/6, 0, 2 * math.pi)
+
+    ctx.set_source_rgb(0.95, 0.8, 0.7)
+    ctx.arc(size/2, size/3, size/5, 0, 2 * math.pi)
     ctx.fill()
-    ctx.set_source_rgb(0.2, 0.4, 0.8) 
-    ctx.rectangle(size/2 - size/8, size/3 + size/8, size/4, size/3)
+
+    ctx.set_source_rgb(0.2, 0.4, 0.8)
+    body_w = size * 0.35
+    body_h = size * 0.45
+    body_x = size/2 - body_w/2
+    body_y = size/2.2
+    ctx.rectangle(body_x, body_y, body_w, body_h)
     ctx.fill()
-    ctx.set_source_rgb(0.3, 0.2, 0.1) 
-    ctx.rectangle(size/2 - size/10, size/3 + size/2.3, size/12, size/6)
+
+    ctx.set_source_rgb(0.3, 0.2, 0.1)
+    leg_w = body_w * 0.25
+    ctx.rectangle(body_x + leg_w*0.2, body_y + body_h - 5, leg_w, size*0.25)
+    ctx.rectangle(body_x + body_w - leg_w*1.2, body_y + body_h - 5, leg_w, size*0.25)
     ctx.fill()
-    ctx.rectangle(size/2 + size/30, size/3 + size/2.3, size/12, size/6)
-    ctx.fill()
+
     buf = surface.get_data()
-    pygame_surface = pygame.image.frombuffer(buf, (size, size), 'ARGB')
+    pygame_surface = pygame.image.frombuffer(buf, (size, size), "ARGB")
     return pygame_surface
 
-def create_tree_sprite(size=60, tree_type="oak"):
+
+def create_tree_sprite(size=130, tree_type="oak"):
     surface = cairo.ImageSurface(cairo.FORMAT_ARGB32, size, size)
     ctx = cairo.Context(surface)
+
     ctx.set_source_rgba(0, 0, 0, 0)
     ctx.paint()
+
     if tree_type == "oak":
-        ctx.set_source_rgb(0.4, 0.26, 0.13)
-        ctx.rectangle(size/2 - size/12, size/2, size/6, size/2.5)
+        ctx.set_source_rgb(0.35, 0.22, 0.1)
+        ctx.rectangle(size/2 - size/12, size*0.55, size/6, size*0.45)
         ctx.fill()
-        ctx.set_source_rgb(0.13, 0.55, 0.13)
-        ctx.arc(size/2, size/2.5, size/3, 0, 2 * math.pi)
+
+        ctx.set_source_rgb(0.05, 0.45, 0.1)
+        ctx.arc(size/2, size*0.45, size/3, 0, 2*math.pi)
         ctx.fill()
+        ctx.arc(size/2 - size/5, size*0.50, size/3, 0, 2*math.pi)
+        ctx.fill()
+        ctx.arc(size/2 + size/5, size*0.50, size/3, 0, 2*math.pi)
+        ctx.fill()
+
     elif tree_type == "pine":
-        ctx.set_source_rgb(0.4, 0.26, 0.13)
-        ctx.rectangle(size/2 - size/15, size/1.8, size/7.5, size/2.2)
+        ctx.set_source_rgb(0.35, 0.22, 0.1)
+        ctx.rectangle(size/2 - size/18, size*0.60, size/9, size*0.40)
         ctx.fill()
-        ctx.set_source_rgb(0.0, 0.4, 0.0)
-        ctx.move_to(size/2, size/6)
-        ctx.line_to(size/4, size/2)
-        ctx.line_to(size*3/4, size/2)
-        ctx.close_path()
-        ctx.fill()
-        ctx.move_to(size/2, size/3)
-        ctx.line_to(size/5, size/1.5)
-        ctx.line_to(size*4/5, size/1.5)
-        ctx.close_path()
-        ctx.fill()
+
+        ctx.set_source_rgb(0.0, 0.35, 0.0)
+        levels = [
+            (size/2, size*0.20, size*0.70),
+            (size/2, size*0.32, size*0.85),
+            (size/2, size*0.46, size)
+        ]
+        for (cx, top, bottom) in levels:
+            ctx.move_to(cx, top)
+            ctx.line_to(cx - size/3, bottom)
+            ctx.line_to(cx + size/3, bottom)
+            ctx.close_path()
+            ctx.fill()
+
     buf = surface.get_data()
-    pygame_surface = pygame.image.frombuffer(buf, (size, size), 'ARGB')
+    pygame_surface = pygame.image.frombuffer(buf, (size, size), "ARGB")
     return pygame_surface
+
 
 
 def create_grass_clump_sprite(width, height):
@@ -192,12 +223,36 @@ def draw_swaying_clump(surface, clump_data, time_sec, camera):
     if screen_x < -sprite_width or screen_x > SCREEN_WIDTH or \
        screen_y < -sprite_height or screen_y > SCREEN_HEIGHT:
         return
-    
 
     surface.blit(sprite, (screen_x, screen_y))
 
 
-# 3. CLASSES OBJEK GAME
+def draw_minimap(surface, player, trees, animals, camera):
+    MAP_SCALE = 0.07
+    MINI_WIDTH = int(MAP_WIDTH * MAP_SCALE)
+    MINI_HEIGHT = int(MAP_HEIGHT * MAP_SCALE)
+
+    minimap = pygame.Surface((MINI_WIDTH, MINI_HEIGHT))
+    minimap.fill((40, 60, 40))
+
+    pygame.draw.rect(minimap, (255, 255, 255), (0, 0, MINI_WIDTH, MINI_HEIGHT), 2)
+
+    for t in trees:
+        tx = int(t.rect.centerx * MAP_SCALE)
+        ty = int(t.rect.centery * MAP_SCALE)
+        pygame.draw.circle(minimap, (0, 255, 0), (tx, ty), 4)
+
+    for a in animals:
+        ax = int(a.rect.centerx * MAP_SCALE)
+        ay = int(a.rect.centery * MAP_SCALE)
+        pygame.draw.circle(minimap, (255, 200, 0), (ax, ay), 4)
+
+    px = int(player.rect.centerx * MAP_SCALE)
+    py = int(player.rect.centery * MAP_SCALE)
+    pygame.draw.circle(minimap, (255, 0, 0), (px, py), 5)
+
+    surface.blit(minimap, (SCREEN_WIDTH - MINI_WIDTH - 15, 15))
+
 
 def calculate_distance(obj1_rect, obj2_rect):
     x1 = obj1_rect.centerx
@@ -208,18 +263,74 @@ def calculate_distance(obj1_rect, obj2_rect):
 
 class Player:
     def __init__(self, x, y):
-        self.sprite = create_player_sprite()
-        self.rect = self.sprite.get_rect(center=(x, y))
+        raw_frames = load_spritesheet("assets/player.png", 64, 64)
+
+        SCALE = 2
+        self.frames = [
+            pygame.transform.scale(frame, (int(64 * SCALE), int(64 * SCALE)))
+            for frame in raw_frames
+        ]
+
+        self.frame_index = 0
+        self.animation_speed = 0.18
+        self.direction = "down"
+        self.moving = False
+
+        self.anim_start = {
+            "down": 0,
+            "left": 8,
+            "right": 16,
+            "up": 24
+        }
+
+        self.image = self.frames[0]
+        self.rect = self.image.get_rect(center=(x, y))
         self.speed = PLAYER_SPEED
-    
+
+    def update_direction_from_keys(self):
+        keys = pygame.key.get_pressed()
+
+        if keys[pygame.K_RIGHT] or keys[pygame.K_d]:
+            self.direction = "right"
+            return
+        if keys[pygame.K_LEFT] or keys[pygame.K_a]:
+            self.direction = "left"
+            return
+        if keys[pygame.K_UP] or keys[pygame.K_w]:
+            self.direction = "up"
+            return
+        if keys[pygame.K_DOWN] or keys[pygame.K_s]:
+            self.direction = "down"
+            return
+
+    def update_animation(self):
+        start = self.anim_start[self.direction]
+        end = start + 8
+
+        if self.moving:
+            self.frame_index += self.animation_speed
+            if self.frame_index >= end:
+                self.frame_index = start
+        else:
+            self.frame_index = start
+
+        self.image = self.frames[int(self.frame_index)]
+
     def move(self, dx, dy):
+        self.update_direction_from_keys()
+
+        self.moving = (dx != 0 or dy != 0)
+
         self.rect.x += dx * self.speed
         self.rect.y += dy * self.speed
         self.rect.clamp_ip(MAP_RECT)
-    
+
+        self.update_animation()
+
     def draw(self, surface, camera):
-        screen_pos_rect = self.rect.move(-camera.x, -camera.y)
-        surface.blit(self.sprite, screen_pos_rect)
+        screen_rect = self.rect.move(-camera.x, -camera.y)
+        surface.blit(self.image, screen_rect)
+
 
 class Tree:
     def __init__(self, x, y, tree_type, name, desc):
@@ -240,42 +351,33 @@ class Tree:
         return {"name": self.name, "description": self.description}
 
 class Animal:
-    def __init__(self, x, y, animal_type, name, desc, color):
-        self.rect = pygame.Rect(x, y, 40, 40)
+    def __init__(self, x, y, animal_type, name, desc, color=None):
         self.animal_type = animal_type
         self.name = name
         self.description = desc
-        self.color = color
         self.type = "animal"
         self.highlight = False
-    
+
+        asset_path = f"assets/animals/{animal_type}.png"
+        self.image = pygame.image.load(asset_path).convert_alpha()
+
+        SCALE = 2
+        w, h = self.image.get_size()
+        self.image = pygame.transform.scale(self.image, (w * SCALE, h * SCALE))
+
+        self.rect = self.image.get_rect(center=(x, y))
+
     def draw(self, surface, camera):
         screen_rect = self.rect.move(-camera.x, -camera.y)
+
         if self.highlight:
-            pygame.draw.circle(surface, YELLOW, screen_rect.center, 30, 3)
-        if self.animal_type == "rabbit":
-            pygame.draw.ellipse(surface, self.color, (screen_rect.x, screen_rect.y + 10, 35, 25))
-            pygame.draw.circle(surface, self.color, (screen_rect.x + 27, screen_rect.y + 12), 10)
-            pygame.draw.ellipse(surface, self.color, (screen_rect.x + 22, screen_rect.y, 6, 15))
-            pygame.draw.ellipse(surface, self.color, (screen_rect.x + 30, screen_rect.y, 6, 15))
-        elif self.animal_type == "deer":
-            pygame.draw.ellipse(surface, self.color, (screen_rect.x, screen_rect.y + 10, 40, 25))
-            pygame.draw.circle(surface, self.color, (screen_rect.x + 35, screen_rect.y + 8), 8)
-            pygame.draw.line(surface, BROWN, (screen_rect.x + 35, screen_rect.y + 8), 
-                                 (screen_rect.x + 32, screen_rect.y), 2)
-            pygame.draw.line(surface, BROWN, (screen_rect.x + 35, screen_rect.y + 8), 
-                                 (screen_rect.x + 38, screen_rect.y), 2)
-        elif self.animal_type == "bird":
-            pygame.draw.ellipse(surface, self.color, (screen_rect.x + 10, screen_rect.y + 15, 20, 15))
-            pygame.draw.circle(surface, self.color, (screen_rect.x + 25, screen_rect.y + 18), 7)
-            pygame.draw.polygon(surface, self.color, [
-                (screen_rect.x + 10, screen_rect.y + 20),
-                (screen_rect.x, screen_rect.y + 15),
-                (screen_rect.x + 5, screen_rect.y + 25)
-            ])
-    
+            pygame.draw.circle(surface, YELLOW, screen_rect.center, 35, 3)
+
+        surface.blit(self.image, screen_rect)
+
     def get_info(self):
         return {"name": self.name, "description": self.description}
+
 
 class InfoPopup:
     def __init__(self, name, description):
@@ -315,8 +417,6 @@ class InfoPopup:
             y_offset += 30
 
 
-# 4. INISIALISASI OBJEK GAME
-
 
 player = Player(MAP_WIDTH // 2, MAP_HEIGHT // 2)
 
@@ -327,22 +427,36 @@ trees = [
     Tree(MAP_WIDTH // 2 - 100, MAP_HEIGHT // 2 + 200, "oak", "Pohon Maple", "Pohon maple terkenal dengan daun berwarna cerah di musim gugur. Getahnya dapat diolah menjadi sirup maple yang manis dan lezat."),
     Tree(MAP_WIDTH // 2 + 500, MAP_HEIGHT // 2 + 250, "pine", "Pohon Cemara", "Pohon cemara adalah pohon hijau abadi yang tetap hijau sepanjang tahun. Mereka memiliki aroma khas dan sering ditanam sebagai tanaman hias."),
 ]
+
+def random_position_in_map(margin=200):
+    x = random.randint(margin, MAP_WIDTH - margin)
+    y = random.randint(margin, MAP_HEIGHT - margin)
+    return x, y
+
 animals = [
-    Animal(MAP_WIDTH // 2, MAP_HEIGHT // 2 - 100, "rabbit", "Kelinci", "Kelinci adalah hewan herbivora yang lincah dengan telinga panjang. Mereka hidup dalam liang dan aktif pada pagi dan sore hari.", (200, 200, 200)),
-    Animal(MAP_WIDTH // 2 + 200, MAP_HEIGHT // 2 + 100, "deer", "Rusa", "Rusa adalah hewan mamalia anggun dengan tanduk bercabang (pada jantan). Mereka hidup berkelompok dan memakan dedaunan serta rumput.", (160, 120, 80)),
-    Animal(MAP_WIDTH // 2 - 300, MAP_HEIGHT // 2 + 200, "bird", "Burung Pipit", "Burung pipit adalah burung kecil yang sering ditemui di sekitar pemukiman. Mereka memakan biji-bijian dan serangga kecil.", (100, 150, 200)),
-    Animal(MAP_WIDTH // 2 + 400, MAP_HEIGHT // 2 - 200, "rabbit", "Kelinci Hutan", "Kelinci hutan lebih besar dari kelinci peliharaan dan memiliki bulu coklat keabu-abuan. Mereka sangat waspada terhadap predator.", (150, 130, 100)),
+    Animal(*random_position_in_map(), "sapi", "Sapi",
+           "Hewan ternak besar penghasil susu dan daging."),
+    Animal(*random_position_in_map(), "anak_sapi", "Anak Sapi",
+           "Anak sapi dikenal sebagai pedet."),
+    Animal(*random_position_in_map(), "itik", "Itik",
+           "Unggas air yang pintar berenang."),
+    Animal(*random_position_in_map(), "domba", "Domba",
+           "Domba memiliki bulu tebal sebagai sumber wol."),
+    Animal(*random_position_in_map(), "babi", "Babi",
+           "Hewan omnivora yang sangat cerdas."),
+    Animal(*random_position_in_map(), "ayam", "Ayam",
+           "Unggas paling umum di sekitar rumah."),
+    Animal(*random_position_in_map(), "kambing", "Kambing",
+           "Hewan pemamah biak yang aktif."),
+    Animal(*random_position_in_map(), "pitik_walik", "Pitik Walik",
+           "Ayam khas dengan bulu menghadap ke atas.")
 ]
 
-
-print("Membuat sprite rumput... (Mungkin butuh beberapa detik)")
 grass_clump_sprites_cache = []
 for _ in range(5): 
     w = random.randint(25, 40)
     h = random.randint(15, 30)
     grass_clump_sprites_cache.append(create_grass_clump_sprite(w, h))
-print("Sprite rumput selesai dibuat.")
-
 
 all_grass_clumps = spawn_all_grass_clumps(2500, grass_clump_sprites_cache)
 
@@ -352,10 +466,6 @@ camera = pygame.Rect(0, 0, SCREEN_WIDTH, SCREEN_HEIGHT)
 popup = None
 current_nearby_object = None
 running = True
-
-
-# 5. MAIN GAME LOOP
-
 
 while running:
     clock.tick(FPS)
@@ -447,8 +557,6 @@ while running:
             
             draw_swaying_clump(screen, data, time_sec, camera)
     
-
-    
     
     if popup:
         popup.draw(screen)
@@ -460,7 +568,8 @@ while running:
     inst_bg.set_alpha(200)
     screen.blit(inst_bg, (10, 10))
     screen.blit(inst_text, (20, 15))
-    
+    draw_minimap(screen, player, trees, animals, camera)
+
     pygame.display.flip()
 
 pygame.quit()
