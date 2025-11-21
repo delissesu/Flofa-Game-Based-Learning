@@ -51,10 +51,12 @@ class GameController:
             self.can_interact_with.highlight = True
     
     def update_cats(self, popup_active):
-        """Update animasi kucing"""
+        """Update animasi kucing dan hewan"""
         if not popup_active: 
             for cat_obj in self.cats:
                 cat_obj.update()
+            for animal_obj in self.animals:
+                animal_obj.update()
     
     def handle_event(self, event):
         """Handle event pygame"""

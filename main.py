@@ -50,12 +50,13 @@ def main():
     animals_data = [
         ("sapi", "Sapi", "Sapi adalah hewan ternak besar yang banyak dipelihara manusia. Hewan ini memiliki tubuh besar dan dikenal sebagai penghasil susu. Sapi biasanya hidup di lingkungan peternakan atau padang rumput."),
         ("anak_sapi", "Anak Sapi", "Anak sapi adalah sapi muda yang masih dalam masa pertumbuhan. Ciri utamanya adalah tubuh yang lebih kecil dan sifat yang masih bergantung pada induknya. Anak sapi hidup di peternakan bersama induknya."),
-        ("itik", "Itik", "Itik adalah unggas air yang sering dipelihara maupun ditemukan di alam liar. Itik memiliki paruh lebar dan sangat suka berenang. Habitatnya biasanya berada di kolam, sungai, atau sawah."),
         ("domba", "Domba", "Domba adalah hewan ternak yang dikenal karena dapat menghasilkan bulu tebal dan lembut. Ciri khas domba adalah tubuhnya yang diselimuti bulu wol. Domba hidup di padang rumput, peternakan, atau daerah dataran tinggi."),
         ("babi", "Babi", "Babi merupakan hewan omnivora yang terkenal sangat cerdas. Ciri utamanya adalah hidung moncong dan sifatnya yang suka mengeksplor lingkungan. Babi biasanya hidup di peternakan atau hutan."),
         ("ayam", "Ayam", "Ayam adalah unggas yang sering dipelihara untuk diambil daging dan telurnya. Ciri khasnya adalah kebiasaan berkokok pada pagi hari, terutama ayam jantan. Ayam hidup di kandang atau pekarangan rumah."),
+        ("ayam_jantan", "Ayam Jantan", "Ayam jantan atau jago adalah ayam pejantan yang memiliki jengger merah dan ekor panjang yang indah. Ciri khasnya adalah suara kokokoknya yang keras di pagi hari. Ayam jantan sering dipelihara sebagai penjaga kandang."),
         ("kambing", "Kambing", "Kambing adalah hewan ternak yang lincah dan mudah beradaptasi. Ciri-cirinya termasuk tubuh ramping, tanduk kecil, dan kebiasaan suka memanjat tempat yang tinggi. Kambing hidup di perbukitan, peternakan, atau padang rumput."),
-        ("pitik_walik", "Pitik Walik", "Pitik Walik adalah ayam unik asal Jawa yang memiliki ciri khas bulu tumbuh terbalik ke arah atas. Keunikan bulunya membuatnya mudah dikenali. Pitik Walik biasanya dipelihara di lingkungan pedesaan atau peternakan kecil.")
+        ("anjing", "Anjing", "Anjing adalah hewan peliharaan yang setia dan pintar. Dikenal sebagai sahabat terbaik manusia karena sifatnya yang loyal dan mudah dilatih. Anjing hidup di rumah atau peternakan sebagai penjaga."),
+        ("merak", "Merak", "Merak adalah burung eksotis dengan bulu ekor yang sangat indah dan berwarna-warni. Ciri khasnya adalah kemampuan membuka ekornya seperti kipas saat pamer. Merak hidup di hutan atau taman.")
     ]
 
     animals = []
