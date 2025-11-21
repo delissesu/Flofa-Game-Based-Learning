@@ -38,24 +38,24 @@ def main():
 
     trees = [
         Tree(CX - 800, CY - 500, "beringin", "Pohon Beringin", "Beringin adalah pohon besar yang tumbuh di daerah tropis. Pohon ini memiliki ciri khas berupa akar gantung yang banyak dan menjuntai seperti rambut. Beringin berasal dan banyak ditemukan di wilayah Asia Tenggara, termasuk Indonesia."),
-        Tree(CX + 800, CY - 500, "oak", "Pohon Oak", "Pohon besar dan kokoh."),
-        Tree(CX - 800, CY + 500, "maple", "Pohon Maple", "Terkenal dengan sirupnya."),
-        Tree(CX + 800, CY + 500, "pine", "Pohon Cemara", "Pohon hijau abadi."),
-        Tree(CX - 400, CY, "mangga", "Pohon Mangga", "Pohon dengan buah termanis didunia dan kalian semua pasti suka."),
-        Tree(CX + 400, CY, "alpukat", "Pohon Alpukat", "Pohon dengan buah yang sangat penuh gizi dan sangaat bagus untuk tubuh."),
-        Tree(CX, CY - 400, "rambutan", "Pohon Rambutan", "Pohon dengan buah eksotis dengan ciri khas buahnya berbulu dengan rasa yang manis."),
-        Tree(CX, CY + 400, "sakura", "Pohon Sakura", "Pohon dengan asli Jepang dengan keindahan bunga berwarna merah mudanya yang sangat cantik.")
+        Tree(CX + 800, CY - 500, "oak", "Pohon Oak", "Pohon Oak merupakan pohon besar yang terkenal kokoh dan dapat hidup sangat lama. Ciri khasnya adalah batang tebal serta daun bercuping yang lebar. Pohon ini berasal dari wilayah beriklim sedang seperti Amerika Utara dan Eropa."),
+        Tree(CX - 800, CY + 500, "maple", "Pohon Maple", "Pohon Maple adalah pohon berdaun lebar yang menghasilkan getah manis yang biasa diolah menjadi sirup maple. Ciri utamanya adalah bentuk daun bercabang yang bisa berubah warna saat musim gugur. Maple berasal dari Kanada dan negara beriklim dingin lainnya di Amerika Utara."),
+        Tree(CX + 800, CY + 500, "pine", "Pohon Cemara", "Pohon Cemara (Pine) adalah pohon berdaun jarum yang tetap hijau sepanjang tahun. Ciri-cirinya meliputi bentuk pohon yang meruncing ke atas dan daun berbentuk jarum tipis. Pohon ini berasal dari daerah pegunungan serta wilayah beriklim sedang."),
+        Tree(CX - 400, CY, "mangga", "Pohon Mangga", "Pohon Mangga merupakan pohon buah tropis yang sangat populer. Pohon ini memiliki ciri daun panjang dan buah manis beraroma khas. Mangga berasal dari Asia Selatan, tetapi kini telah tumbuh luas di berbagai daerah tropis, termasuk Indonesia."),
+        Tree(CX + 400, CY, "alpukat", "Pohon Alpukat", "Pohon Alpukat adalah pohon buah yang menghasilkan buah bergizi dengan daging lembut berwarna hijau kekuningan. Ciri khasnya terletak pada daunnya yang lebar serta buah yang kaya lemak sehat. Alpukat berasal dari wilayah Amerika Tengah dan Selatan."),
+        Tree(CX, CY - 400, "rambutan", "Pohon Rambutan", "Pohon Rambutan adalah pohon tropis yang menghasilkan buah unik dengan kulit berbulu dan rasa manis. Ciri buahnya yang berbulu menjadi tanda khas yang mudah dikenali. Rambutan berasal dari wilayah Asia Tenggara."),
+        Tree(CX, CY + 400, "sakura", "Pohon Sakura", "Pohon Sakura merupakan pohon berbunga yang sangat terkenal di Jepang. Ciri utamanya adalah bunga berwarna merah muda lembut yang mekar di musim semi. Sakura berasal dari Jepang dan beberapa wilayah Asia Timur lainnya.")
     ]
     
     animals_data = [
-        ("sapi", "Sapi", "Penghasil susu."),
-        ("anak_sapi", "Anak Sapi", "Sapi kecil."),
-        ("itik", "Itik", "Suka berenang."),
-        ("domba", "Domba", "Bulu tebal."),
-        ("babi", "Babi", "Hewan cerdas."),
-        ("ayam", "Ayam", "Berkokok pagi hari."),
-        ("kambing", "Kambing", "Suka memanjat."),
-        ("pitik_walik", "Pitik Walik", "Bulu terbalik.")
+        ("sapi", "Sapi", "Sapi adalah hewan ternak besar yang banyak dipelihara manusia. Hewan ini memiliki tubuh besar dan dikenal sebagai penghasil susu. Sapi biasanya hidup di lingkungan peternakan atau padang rumput."),
+        ("anak_sapi", "Anak Sapi", "Anak sapi adalah sapi muda yang masih dalam masa pertumbuhan. Ciri utamanya adalah tubuh yang lebih kecil dan sifat yang masih bergantung pada induknya. Anak sapi hidup di peternakan bersama induknya."),
+        ("itik", "Itik", "Itik adalah unggas air yang sering dipelihara maupun ditemukan di alam liar. Itik memiliki paruh lebar dan sangat suka berenang. Habitatnya biasanya berada di kolam, sungai, atau sawah."),
+        ("domba", "Domba", "Domba adalah hewan ternak yang dikenal karena dapat menghasilkan bulu tebal dan lembut. Ciri khas domba adalah tubuhnya yang diselimuti bulu wol. Domba hidup di padang rumput, peternakan, atau daerah dataran tinggi."),
+        ("babi", "Babi", "Babi merupakan hewan omnivora yang terkenal sangat cerdas. Ciri utamanya adalah hidung moncong dan sifatnya yang suka mengeksplor lingkungan. Babi biasanya hidup di peternakan atau hutan."),
+        ("ayam", "Ayam", "Ayam adalah unggas yang sering dipelihara untuk diambil daging dan telurnya. Ciri khasnya adalah kebiasaan berkokok pada pagi hari, terutama ayam jantan. Ayam hidup di kandang atau pekarangan rumah."),
+        ("kambing", "Kambing", "Kambing adalah hewan ternak yang lincah dan mudah beradaptasi. Ciri-cirinya termasuk tubuh ramping, tanduk kecil, dan kebiasaan suka memanjat tempat yang tinggi. Kambing hidup di perbukitan, peternakan, atau padang rumput."),
+        ("pitik_walik", "Pitik Walik", "Pitik Walik adalah ayam unik asal Jawa yang memiliki ciri khas bulu tumbuh terbalik ke arah atas. Keunikan bulunya membuatnya mudah dikenali. Pitik Walik biasanya dipelihara di lingkungan pedesaan atau peternakan kecil.")
     ]
 
     animals = []

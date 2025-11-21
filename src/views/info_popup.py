@@ -5,7 +5,7 @@ class InfoPopup:
     def __init__(self, name, description, image_surface):
         self.name = name
         self.description = description
-        self.width, self.height = 500, 220
+        self.width, self.height = 500, 280
         self.x = (SCREEN_WIDTH - self.width) // 2
         self.y = (SCREEN_HEIGHT - self.height) // 2
         
