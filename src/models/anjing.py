@@ -13,46 +13,54 @@ class Anjing:
 
         self.all_frames = []
         full_path = get_asset_path("assets", "animals_move", "anjing.png")
-        
+
         try:
             sprite_sheet = pygame.image.load(full_path).convert_alpha()
+
+            row_lengths = [7, 7, 7, 3]
+
             sheet_w, sheet_h = sprite_sheet.get_size()
-            
-            cols = 8
-            rows = 4
-            frame_w = sheet_w // cols
-            frame_h = sheet_h // rows
-            
+
+            frame_w = sheet_w // 7 
+            frame_h = sheet_h // 5
+
             SCALE_FACTOR = 0.47
-            target_w = int(frame_w * SCALE_FACTOR)
-            target_h = int(frame_h * SCALE_FACTOR)
-            
-            for row in range(rows):
+
+            for row, cols in enumerate(row_lengths):
                 for col in range(cols):
                     rect = pygame.Rect(col * frame_w, row * frame_h, frame_w, frame_h)
-                    image_big = sprite_sheet.subsurface(rect)
-                    image_small = pygame.transform.scale(image_big, (target_w, target_h))
-                    self.all_frames.append(image_small)
-                    
+
+                    frame = sprite_sheet.subsurface(rect).copy()
+
+                    PADDING_TOP = 6
+                    new_surface = pygame.Surface((frame_w, frame_h + PADDING_TOP), pygame.SRCALPHA)
+                    new_surface.blit(frame, (0, PADDING_TOP))
+                    frame = new_surface
+
+                    target_w = int(frame.get_width() * SCALE_FACTOR)
+                    target_h = int(frame.get_height() * SCALE_FACTOR)
+                    frame = pygame.transform.scale(frame, (target_w, target_h))
+
+                    self.all_frames.append(frame)
+
         except Exception as e:
             print(f"[ERROR] Gagal load anjing: {e}")
-            dummy = pygame.Surface((43, 43))
-            dummy.fill((139, 90, 43))
-            self.all_frames = [dummy] * 32
+
 
         def get_frames(start, count):
             safe_count = min(count, len(self.all_frames) - start)
             if safe_count <= 0: return [self.all_frames[0]]
             return self.all_frames[start : start + safe_count]
 
-        self.idle_frames = get_frames(0, 8)
-        self.walk_frames = get_frames(8, 8)
-        self.run_frames = get_frames(16, 8)
-        self.sleep_frames = get_frames(24, 4)
+        self.idle_frames = self.all_frames[0:14] 
+        self.walk_frames = self.all_frames[14:21]   
+        self.sleep_frames = self.all_frames[21:22]  
+        self.sit_frames = self.all_frames[22:24]  
+        self.run_frames = self.walk_frames 
 
         self.current_animation = self.idle_frames
         self.frame_index = 0
-        self.animation_speed = 0.17  # Anjing bergerak cepat
+        self.animation_speed = 0.17 
         
         if self.current_animation:
             self.image = self.current_animation[0]
@@ -61,7 +69,7 @@ class Anjing:
             
         self.rect = self.image.get_rect(center=(x, y))
         
-        self.speed = random.uniform(0.8, 1.6)  # Anjing sangat lincah
+        self.speed = random.uniform(0.8, 1.6)
         self.state = "idle"
         self.move_timer = 0
         self.move_duration = 0
@@ -94,11 +102,11 @@ class Anjing:
         if self.move_timer <= 0:
             rand_val = random.random()
             if self.state == "idle":
-                if rand_val < 0.75:  # Anjing sangat aktif
+                if rand_val < 0.75:
                     self.state = "walking"
                     self.move_duration = random.randint(60, 140)
                     self.speed = random.uniform(0.8, 1.6)
-                elif rand_val < 0.85:  # Kadang lari
+                elif rand_val < 0.85: 
                     self.state = "running"
                     self.move_duration = random.randint(40, 80)
                     self.speed = random.uniform(1.5, 2.2)
