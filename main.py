@@ -4,7 +4,15 @@ import random
 from src.config import FPS, MAP_WIDTH, MAP_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT
 from src.models.player import Player
 from src.models.tree import Tree
-from src.models.animal import Animal
+from src.models.sapi import Sapi
+from src.models.anak_sapi import AnakSapi
+from src.models.domba import Domba
+from src.models.babi import Babi
+from src.models.ayam import Ayam
+from src.models.ayam_jantan import AyamJantan
+from src.models.kambing import Kambing
+from src.models.anjing import Anjing
+from src.models.merak import Merak
 from src.models.cat import Cat
 from src.models.grass import create_grass_clump_sprite, spawn_all_grass_clumps
 from src.controllers.game_controller import GameController
@@ -47,22 +55,36 @@ def main():
         Tree(CX, CY + 400, "sakura", "Pohon Sakura", "Pohon Sakura merupakan pohon berbunga yang sangat terkenal di Jepang. Ciri utamanya adalah bunga berwarna merah muda lembut yang mekar di musim semi. Sakura berasal dari Jepang dan beberapa wilayah Asia Timur lainnya.")
     ]
     
-    animals_data = [
-        ("sapi", "Sapi", "Sapi adalah hewan ternak besar yang banyak dipelihara manusia. Hewan ini memiliki tubuh besar dan dikenal sebagai penghasil susu. Sapi biasanya hidup di lingkungan peternakan atau padang rumput."),
-        ("anak_sapi", "Anak Sapi", "Anak sapi adalah sapi muda yang masih dalam masa pertumbuhan. Ciri utamanya adalah tubuh yang lebih kecil dan sifat yang masih bergantung pada induknya. Anak sapi hidup di peternakan bersama induknya."),
-        ("domba", "Domba", "Domba adalah hewan ternak yang dikenal karena dapat menghasilkan bulu tebal dan lembut. Ciri khas domba adalah tubuhnya yang diselimuti bulu wol. Domba hidup di padang rumput, peternakan, atau daerah dataran tinggi."),
-        ("babi", "Babi", "Babi merupakan hewan omnivora yang terkenal sangat cerdas. Ciri utamanya adalah hidung moncong dan sifatnya yang suka mengeksplor lingkungan. Babi biasanya hidup di peternakan atau hutan."),
-        ("ayam", "Ayam", "Ayam adalah unggas yang sering dipelihara untuk diambil daging dan telurnya. Ciri khasnya adalah kebiasaan berkokok pada pagi hari, terutama ayam jantan. Ayam hidup di kandang atau pekarangan rumah."),
-        ("ayam_jantan", "Ayam Jantan", "Ayam jantan atau jago adalah ayam pejantan yang memiliki jengger merah dan ekor panjang yang indah. Ciri khasnya adalah suara kokokoknya yang keras di pagi hari. Ayam jantan sering dipelihara sebagai penjaga kandang."),
-        ("kambing", "Kambing", "Kambing adalah hewan ternak yang lincah dan mudah beradaptasi. Ciri-cirinya termasuk tubuh ramping, tanduk kecil, dan kebiasaan suka memanjat tempat yang tinggi. Kambing hidup di perbukitan, peternakan, atau padang rumput."),
-        ("anjing", "Anjing", "Anjing adalah hewan peliharaan yang setia dan pintar. Dikenal sebagai sahabat terbaik manusia karena sifatnya yang loyal dan mudah dilatih. Anjing hidup di rumah atau peternakan sebagai penjaga."),
-        ("merak", "Merak", "Merak adalah burung eksotis dengan bulu ekor yang sangat indah dan berwarna-warni. Ciri khasnya adalah kemampuan membuka ekornya seperti kipas saat pamer. Merak hidup di hutan atau taman.")
-    ]
-
+    # HEWAN - Setiap hewan punya class sendiri dengan karakteristik unik
     animals = []
-    for a_type, a_name, a_desc in animals_data:
-        safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100) 
-        animals.append(Animal(safe_x, safe_y, a_type, a_name, a_desc))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(Sapi(safe_x, safe_y, "Sapi", "Sapi adalah hewan ternak besar yang banyak dipelihara manusia. Hewan ini memiliki tubuh besar dan dikenal sebagai penghasil susu. Sapi biasanya hidup di lingkungan peternakan atau padang rumput."))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(AnakSapi(safe_x, safe_y, "Anak Sapi", "Anak sapi adalah sapi muda yang masih dalam masa pertumbuhan. Ciri utamanya adalah tubuh yang lebih kecil dan sifat yang masih bergantung pada induknya. Anak sapi hidup di peternakan bersama induknya."))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(Domba(safe_x, safe_y, "Domba", "Domba adalah hewan ternak yang dikenal karena dapat menghasilkan bulu tebal dan lembut. Ciri khas domba adalah tubuhnya yang diselimuti bulu wol. Domba hidup di padang rumput, peternakan, atau daerah dataran tinggi."))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(Babi(safe_x, safe_y, "Babi", "Babi merupakan hewan omnivora yang terkenal sangat cerdas. Ciri utamanya adalah hidung moncong dan sifatnya yang suka mengeksplor lingkungan. Babi biasanya hidup di peternakan atau hutan."))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(Ayam(safe_x, safe_y, "Ayam", "Ayam adalah unggas yang sering dipelihara untuk diambil daging dan telurnya. Ciri khasnya adalah kebiasaan berkokok pada pagi hari, terutama ayam jantan. Ayam hidup di kandang atau pekarangan rumah."))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(AyamJantan(safe_x, safe_y, "Ayam Jantan", "Ayam jantan atau jago adalah ayam pejantan yang memiliki jengger merah dan ekor panjang yang indah. Ciri khasnya adalah suara kokokoknya yang keras di pagi hari. Ayam jantan sering dipelihara sebagai penjaga kandang."))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(Kambing(safe_x, safe_y, "Kambing", "Kambing adalah hewan ternak yang lincah dan mudah beradaptasi. Ciri-cirinya termasuk tubuh ramping, tanduk kecil, dan kebiasaan suka memanjat tempat yang tinggi. Kambing hidup di perbukitan, peternakan, atau padang rumput."))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(Anjing(safe_x, safe_y, "Anjing", "Anjing adalah hewan peliharaan yang setia dan pintar. Dikenal sebagai sahabat terbaik manusia karena sifatnya yang loyal dan mudah dilatih. Anjing hidup di rumah atau peternakan sebagai penjaga."))
+    
+    safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
+    animals.append(Merak(safe_x, safe_y, "Merak", "Merak adalah burung eksotis dengan bulu ekor yang sangat indah dan berwarna-warni. Ciri khasnya adalah kemampuan membuka ekornya seperti kipas saat pamer. Merak hidup di hutan atau taman."))
+
 
     # Kucing
     cats = []
