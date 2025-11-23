@@ -38,7 +38,6 @@ def main():
     CY = MAP_HEIGHT // 2
 
     trees = [
-<<<<<<< HEAD
         Tree(CX - 800, CY - 500, "beringin", "Pohon Beringin", "Pohon besar yang mempunyai akar di atas dan mirip rambut."),
         Tree(CX + 800, CY - 500, "oak", "Pohon Oak", "Pohon besar dan kokoh."),
         Tree(CX - 800, CY + 500, "maple", "Pohon Maple", "Terkenal dengan sirupnya."),
@@ -64,7 +63,6 @@ def main():
     for a_type, a_name, a_desc in animals_data:
         safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100) 
         animals.append(Animal(safe_x, safe_y, a_type, a_name, a_desc))
-=======
         Tree(CX - 800, CY - 500, "beringin", "Pohon Beringin", "Beringin adalah pohon besar yang tumbuh di daerah tropis. Pohon ini memiliki ciri khas berupa akar gantung yang banyak dan menjuntai seperti rambut. Beringin berasal dan banyak ditemukan di wilayah Asia Tenggara, termasuk Indonesia."),
         Tree(CX + 800, CY - 500, "oak", "Pohon Oak", "Pohon Oak merupakan pohon besar yang terkenal kokoh dan dapat hidup sangat lama. Ciri khasnya adalah batang tebal serta daun bercuping yang lebar. Pohon ini berasal dari wilayah beriklim sedang seperti Amerika Utara dan Eropa."),
         Tree(CX - 800, CY + 500, "maple", "Pohon Maple", "Pohon Maple adalah pohon berdaun lebar yang menghasilkan getah manis yang biasa diolah menjadi sirup maple. Ciri utamanya adalah bentuk daun bercabang yang bisa berubah warna saat musim gugur. Maple berasal dari Kanada dan negara beriklim dingin lainnya di Amerika Utara."),
@@ -73,7 +71,7 @@ def main():
         Tree(CX + 400, CY, "alpukat", "Pohon Alpukat", "Pohon Alpukat adalah pohon buah yang menghasilkan buah bergizi dengan daging lembut berwarna hijau kekuningan. Ciri khasnya terletak pada daunnya yang lebar serta buah yang kaya lemak sehat. Alpukat berasal dari wilayah Amerika Tengah dan Selatan."),
         Tree(CX, CY - 400, "rambutan", "Pohon Rambutan", "Pohon Rambutan adalah pohon tropis yang menghasilkan buah unik dengan kulit berbulu dan rasa manis. Ciri buahnya yang berbulu menjadi tanda khas yang mudah dikenali. Rambutan berasal dari wilayah Asia Tenggara."),
         Tree(CX, CY + 400, "sakura", "Pohon Sakura", "Pohon Sakura merupakan pohon berbunga yang sangat terkenal di Jepang. Ciri utamanya adalah bunga berwarna merah muda lembut yang mekar di musim semi. Sakura berasal dari Jepang dan beberapa wilayah Asia Timur lainnya.")
-    ]
+    
     
     # HEWAN - Setiap hewan punya class sendiri dengan karakteristik unik
     animals = []
@@ -105,34 +103,27 @@ def main():
     safe_x, safe_y = get_safe_random_pos(trees + animals, min_dist=100)
     animals.append(Merak(safe_x, safe_y, "Merak", "Merak adalah burung eksotis dengan bulu ekor yang sangat indah dan berwarna-warni. Ciri khasnya adalah kemampuan membuka ekornya seperti kipas saat pamer. Merak hidup di hutan atau taman."))
 
->>>>>>> main
 
     # Kucing
     cats = []
     safe_x, safe_y = get_safe_random_pos(trees + animals + cats, min_dist=120)
     cats.append(Cat(safe_x, safe_y, "Si Meng", "Kucing kesayangan."))
 
-<<<<<<< HEAD
     # Kalkun
     turkeys = []
     safe_x, safe_y = get_safe_random_pos(trees + animals + cats + turkeys, min_dist=120)
     turkeys.append(Turkey(safe_x, safe_y, "Si Kalkun", "Kalkun yang suka lari-lari."))
     
 
-=======
->>>>>>> main
     print("Menyiapkan rumput...")
     grass_cache = [create_grass_clump_sprite(random.randint(25,40), random.randint(15,30)) for _ in range(5)]
     all_grass = spawn_all_grass_clumps(3000, grass_cache)
     
-<<<<<<< HEAD
     
     # Inisialisasi MVC
     controller = GameController(player, trees, animals, cats, turkeys, all_grass)
-=======
     # Inisialisasi MVC
     controller = GameController(player, trees, animals, cats, all_grass)
->>>>>>> main
     view = GameView(screen)
     
     running = True
@@ -152,10 +143,7 @@ def main():
         controller.update_camera(SCREEN_WIDTH, SCREEN_HEIGHT)
         controller.update_interactions()
         controller.update_cats(controller.popup is not None)
-<<<<<<< HEAD
         controller.update_turkeys(controller.popup is not None)
-=======
->>>>>>> main
         
         # Render
         view.render(
@@ -163,10 +151,7 @@ def main():
             trees,
             animals,
             cats,
-<<<<<<< HEAD
             controller.turkeys,
-=======
->>>>>>> main
             all_grass,
             controller.camera,
             time_sec,
