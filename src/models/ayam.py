@@ -11,6 +11,7 @@ class Ayam:
         self.type = "animal"
         self.highlight = False
 
+        # --- LOAD ASSET ---
         self.all_frames = []
         full_path = get_asset_path("assets", "animals_move", "ayam.png")
         
@@ -18,15 +19,20 @@ class Ayam:
             sprite_sheet = pygame.image.load(full_path).convert_alpha()
             sheet_w, sheet_h = sprite_sheet.get_size()
             
-            cols = 8
-            rows = 4
+            # --- PERBAIKAN 1: Grid Sesuai Gambar (6 Kolom, 8 Baris) ---
+            cols = 6 
+            rows = 8 
+            
             frame_w = sheet_w // cols
             frame_h = sheet_h // rows
             
-            SCALE_FACTOR = 0.42  # Ayam lebih kecil
+            # --- PERBAIKAN 2: Skala Diperbesar (Biar gak kecil banget) ---
+            SCALE_FACTOR = 2.8 
+            
             target_w = int(frame_w * SCALE_FACTOR)
             target_h = int(frame_h * SCALE_FACTOR)
             
+            # Potong-potong gambar
             for row in range(rows):
                 for col in range(cols):
                     rect = pygame.Rect(col * frame_w, row * frame_h, frame_w, frame_h)
@@ -35,115 +41,150 @@ class Ayam:
                     self.all_frames.append(image_small)
                     
         except Exception as e:
-            print(f"[ERROR] Gagal load ayam: {e}")
-            dummy = pygame.Surface((38, 38))
-            dummy.fill((255, 255, 255))
-            self.all_frames = [dummy] * 32
+            print(f"[ERROR] Gagal load domba: {e}")
+            dummy = pygame.Surface((50, 50))
+            dummy.fill((200, 200, 200))
+            self.all_frames = [dummy] * 48
 
-        def get_frames(start, count):
-            safe_count = min(count, len(self.all_frames) - start)
-            if safe_count <= 0: return [self.all_frames[0]]
-            return self.all_frames[start : start + safe_count]
+        # --- Helper buat ambil frame ---
+        def get_frames(start_index, count):
+            # Ambil potongan frame dari list besar
+            return self.all_frames[start_index : start_index + count]
 
-        self.idle_frames = get_frames(0, 8)
-        self.walk_frames = get_frames(8, 8)
-        self.run_frames = get_frames(16, 8)
-        self.sleep_frames = get_frames(24, 4)
+        # --- MAPPING ANIMASI (Sesuai gambar domba.png) ---
+        # Baris 3 (index 12) = Jalan ke Kanan (6 frame)
+        self.walk_frames = get_frames(12, 6)
+        
+        # Baris 5 (index 24) = Diam/Idle (4 frame yang ada gambarnya)
+        self.idle_frames = get_frames(24, 4)
+        
+        # Baris 7 (index 36) = Tidur (4 frame)
+        self.sleep_frames = get_frames(36, 4)
 
+        # Set awal
         self.current_animation = self.idle_frames
         self.frame_index = 0
-        self.animation_speed = 0.16  # Ayam bergerak cepat
+        self.animation_speed = 0.12  # Kecepatan animasi
         
-        if self.current_animation:
-            self.image = self.current_animation[0]
-        else:
-            self.image = pygame.Surface((38, 38))
-            
+        self.image = self.current_animation[0]
         self.rect = self.image.get_rect(center=(x, y))
+
+        # --- PERBAIKAN 3: Anti-Sliding (Pakai koordinat Float) ---
+        self.true_x = float(x)
+        self.true_y = float(y)
         
-        self.speed = random.uniform(0.7, 1.4)  # Ayam lincah
+        self.speed = random.uniform(0.5, 0.9)
         self.state = "idle"
         self.move_timer = 0
         self.move_duration = 0
         self.target_pos = (x, y)
         self.facing_right = True
 
-    def set_animation(self, animation_frames, animation_speed=0.16):
-        if self.current_animation != animation_frames and len(animation_frames) > 0:
+    def set_animation(self, animation_frames, animation_speed=0.12):
+        # Ganti animasi hanya kalau beda dari yang sekarang
+        if self.current_animation != animation_frames:
             self.current_animation = animation_frames
             self.frame_index = 0
             self.animation_speed = animation_speed
+            # Reset rect biar gak loncat
+            self.rect = self.image.get_rect(center=self.rect.center)
 
     def update_animation(self):
         if not self.current_animation: return
 
+        # Jalankan frame
         self.frame_index += self.animation_speed
         if self.frame_index >= len(self.current_animation):
             self.frame_index = 0
         
         idx = int(self.frame_index)
+        
+        # Ambil gambar & Flip kalau hadap kiri
         if idx < len(self.current_animation):
-            current_frame_image = self.current_animation[idx]
+            frame_img = self.current_animation[idx]
             if not self.facing_right:
-                self.image = pygame.transform.flip(current_frame_image, True, False)
+                self.image = pygame.transform.flip(frame_img, True, False)
             else:
-                self.image = current_frame_image
+                self.image = frame_img
+            
+            # PENTING: Jaga titik tengah tetap stabil
+            self.rect = self.image.get_rect(center=(int(self.true_x), int(self.true_y)))
 
     def update_movement(self):
         self.move_timer -= 1
+        
+        # --- LOGIKA GANTI STATE (Jalan/Diam/Tidur) ---
         if self.move_timer <= 0:
-            rand_val = random.random()
+            rand = random.random()
+            
             if self.state == "idle":
-                if rand_val < 0.7:  # Ayam sangat aktif
+                if rand < 0.6: # 60% peluang jalan
                     self.state = "walking"
-                    self.move_duration = random.randint(50, 120)
-                    self.speed = random.uniform(0.7, 1.4)
+                    self.move_duration = random.randint(100, 200)
+                    # Tentukan target random
+                    tx = random.randint(max(0, int(self.true_x) - 150), min(MAP_WIDTH, int(self.true_x) + 150))
+                    ty = random.randint(max(0, int(self.true_y) - 150), min(MAP_HEIGHT, int(self.true_y) + 150))
+                    self.target_pos = (tx, ty)
                 else:
                     self.state = random.choice(["idle", "sleeping"])
-                    self.move_duration = random.randint(60, 150)
+                    self.move_duration = random.randint(100, 200)
+            
             elif self.state == "walking":
-                self.state = random.choice(["idle", "sleeping"])
-                self.move_duration = random.randint(60, 150)
+                self.state = "idle"
+                self.move_duration = random.randint(50, 100)
+                
             elif self.state == "sleeping":
                 self.state = "idle"
-                self.move_duration = random.randint(40, 80)
+                self.move_duration = random.randint(50, 100)
 
-            if self.state == "walking":
-                self.target_pos = (
-                    random.randint(max(0, self.rect.centerx - 100), min(MAP_WIDTH, self.rect.centerx + 100)),
-                    random.randint(max(0, self.rect.centery - 100), min(MAP_HEIGHT, self.rect.centery + 100))
-                )
-            
             self.move_timer = self.move_duration
 
+        # --- EKSEKUSI GERAKAN ---
         if self.state == "walking":
-            self.set_animation(self.walk_frames, animation_speed=0.18)
+            self.set_animation(self.walk_frames, 0.15)
             
-            dx = self.target_pos[0] - self.rect.centerx
-            dy = self.target_pos[1] - self.rect.centery
+            # Hitung jarak
+            dx = self.target_pos[0] - self.true_x
+            dy = self.target_pos[1] - self.true_y
             dist = math.sqrt(dx**2 + dy**2)
             
             if dist > self.speed:
-                self.rect.x += int((dx / dist) * self.speed)
-                self.rect.y += int((dy / dist) * self.speed)
+                # Gerak halus (float)
+                self.true_x += (dx / dist) * self.speed
+                self.true_y += (dy / dist) * self.speed
+                
+                # Update hadap kanan/kiri
                 if dx < 0: self.facing_right = False
                 elif dx > 0: self.facing_right = True
             else:
                 self.state = "idle"
-            self.rect.clamp_ip(MAP_RECT)
 
         elif self.state == "idle":
-            self.set_animation(self.idle_frames)
+            self.set_animation(self.idle_frames, 0.08)
             
         elif self.state == "sleeping":
-            self.set_animation(self.sleep_frames, animation_speed=0.08)
+            self.set_animation(self.sleep_frames, 0.05)
+
+        # Kunci posisi dalam map
+        self.true_x = max(0, min(MAP_WIDTH, self.true_x))
+        self.true_y = max(0, min(MAP_HEIGHT, self.true_y))
+        
+        # Sinkronisasi akhir ke Rect
+        self.rect.centerx = int(self.true_x)
+        self.rect.centery = int(self.true_y)
 
     def update(self):
         self.update_movement()
         self.update_animation()
 
     def draw(self, surface, camera):
+        # Gambar menyesuaikan kamera
         screen_rect = self.rect.move(-camera.x, -camera.y)
+        
+        # Efek highlight (lingkaran kuning kalau dekat player)
         if self.highlight:
-            pygame.draw.circle(surface, YELLOW, screen_rect.center, 30, 3)
+            # Offset sedikit ke bawah biar lingkarannya pas di kaki
+            circle_pos = (screen_rect.centerx, screen_rect.centery + 10) 
+            pygame.draw.circle(surface, YELLOW, circle_pos, 30, 2)
+            
         surface.blit(self.image, screen_rect)
