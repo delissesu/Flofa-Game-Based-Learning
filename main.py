@@ -4,6 +4,7 @@ import random
 from src.config import FPS, MAP_WIDTH, MAP_HEIGHT, SCREEN_WIDTH, SCREEN_HEIGHT
 from src.models.player import Player
 from src.models.tree import Tree
+from src.models.boundary_tree import BoundaryTree, create_boundary_trees
 from src.models.sapi import Sapi
 from src.models.anak_sapi import AnakSapi
 from src.models.domba import Domba
@@ -95,8 +96,12 @@ def main():
     grass_cache = [create_grass_clump_sprite(random.randint(25,40), random.randint(15,30)) for _ in range(5)]
     all_grass = spawn_all_grass_clumps(3000, grass_cache)
     
+    print("Menyiapkan pohon boundary...")
+    boundary_trees = create_boundary_trees(MAP_WIDTH, MAP_HEIGHT, spacing=80, margin=50)
+    
     # Inisialisasi MVC
     controller = GameController(player, trees, animals, cats, all_grass)
+    controller.boundary_trees = boundary_trees
     view = GameView(screen)
     
     running = True
@@ -127,7 +132,8 @@ def main():
             controller.camera,
             time_sec,
             controller.popup,
-            controller.can_interact_with
+            controller.can_interact_with,
+            boundary_trees
         )
     
     pygame.quit()

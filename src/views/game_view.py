@@ -9,12 +9,14 @@ class GameView:
         self.font_pixel = pygame.font.Font(None, 28)
         self.screen = screen
     
-    def render(self, player, trees, animals, cats, grass_clumps, camera, time_sec, popup, can_interact_with):
-        """Render semua elemen game"""
+    def render(self, player, trees, animals, cats, grass_clumps, camera, time_sec, popup, can_interact_with, boundary_trees=None):
         self.screen.fill(GREEN_BG)
         
-        # Sorting untuk depth rendering
         drawables = []
+        if boundary_trees:
+            for bt in boundary_trees:
+                drawables.append(("boundary_tree", bt.rect.bottom, bt))
+        
         drawables.append(("sprite", player.rect.bottom, player))
         for t in trees: drawables.append(("sprite", t.rect.bottom, t))
         for a in animals: drawables.append(("sprite", a.rect.bottom, a))
@@ -26,8 +28,8 @@ class GameView:
         for type, y, data in drawables:
             if type == "sprite": data.draw(self.screen, camera)
             elif type == "grass": draw_swaying_clump(self.screen, data, time_sec, camera)
+            elif type == "boundary_tree": data.draw(self.screen, camera)
         
-        # Interaction prompt
         if can_interact_with and not popup:
             prompt_text = self.font_pixel.render("[SPASI]", True, WHITE)
             prompt_bg = pygame.Surface((prompt_text.get_width() + 10, prompt_text.get_height() + 6))
@@ -51,7 +53,6 @@ class GameView:
         pygame.display.flip()
     
     def _draw_minimap(self, player, trees, animals, cats, camera):
-        """Menggambar minimap"""
         SCALE = 0.08
         MW, MH = int(MAP_WIDTH * SCALE), int(MAP_HEIGHT * SCALE)
         minimap = pygame.Surface((MW, MH)); minimap.fill((20, 50, 20))
