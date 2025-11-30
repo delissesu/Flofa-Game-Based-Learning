@@ -100,8 +100,7 @@ def main():
     boundary_trees = create_boundary_trees(MAP_WIDTH, MAP_HEIGHT, spacing=80, margin=50)
     
     # Inisialisasi MVC
-    controller = GameController(player, trees, animals, cats, all_grass)
-    controller.boundary_trees = boundary_trees
+    controller = GameController(player, trees, animals, cats, all_grass, boundary_trees)
     view = GameView(screen)
     
     running = True

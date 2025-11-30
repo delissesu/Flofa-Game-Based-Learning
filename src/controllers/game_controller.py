@@ -4,12 +4,13 @@ from src.utils.helpers import calculate_distance
 from src.views.info_popup import InfoPopup
 
 class GameController:
-    def __init__(self, player, trees, animals, cats, grass_clumps):
+    def __init__(self, player, trees, animals, cats, grass_clumps, boundary_trees=None):
         self.player = player
         self.trees = trees
         self.animals = animals
         self.cats = cats
         self.grass_clumps = grass_clumps
+        self.boundary_trees = boundary_trees if boundary_trees else []
         self.camera = pygame.Rect(0, 0, 0, 0)  # Will be set in update_camera
         self.popup = None
         self.can_interact_with = None
